@@ -1,0 +1,125 @@
+
+Q1:
+
+
+#include<sys/types.h>
+#include<sys/ipc.h>
+#include<sys/shm.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<string.h>
+
+int main(int argc, char* argv[]){
+int fd[2];
+if(pipe(fd)==-1){
+	printf("Error creating pipe");
+}
+int id=fork();
+int x;
+int y;
+if(id==0){
+	close(fd[1]);
+	
+	read(fd[0],&y,sizeof(y));
+	
+	printf("The message is %d",y);
+	
+}
+else{
+	printf("Enter the message");
+	scanf("%d",&x);
+	
+	close(fd[0]);
+	
+	
+	write(fd[1],&x,sizeof(x));
+	close(fd[1]);
+	
+}
+
+
+}
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+Q2
+
+// sending message
+# include <stdio.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <unistd.h> 
+int main () { 
+int fd, retval;
+char buffer [12] = "Helloprogram";
+fflush (stdin);
+printf("The message sent is %s \n",buffer);
+retval = mkfifo ("/tmp/myfifo", 0666);
+fd = open ("/tmp/myfifo",O_WRONLY);
+write (fd,buffer,sizeof(buffer));
+close (fd); 
+return 0;
+}
+
+////// recieving message
+# include <stdio.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <unistd.h> 
+int main () { 
+int fd, retval;
+char buffer [12] = "Helloprogram";
+fflush (stdin);
+printf("The message sent is %s \n",buffer);
+retval = mkfifo ("/tmp/myfifo", 0666);
+fd = open ("/tmp/myfifo",O_WRONLY);
+write (fd,buffer,sizeof(buffer));
+close (fd); 
+return 0;
+}
+
+b)
+# include <sys/stat.h> 
+# include <sys/types.h> 
+# include <fcntl.h> 
+# include <unistd.h>
+# include <stdio.h> 
+int main() { 
+int fd, retval; 
+char nbuffer[12]; 
+fd = open ("/tmp/myfifo",O_RDONLY);
+retval = read (fd, nbuffer, sizeof (nbuffer)); 
+fflush(stdin);  
+write(1, nbuffer, sizeof (nbuffer)); 
+
+close (fd); 
+return 0; 
+}
+
+c)
+
+# include <sys/stat.h> 
+# include <sys/types.h> 
+# include <fcntl.h> 
+# include <unistd.h>
+# include <stdio.h> 
+int main() { 
+int fd, retval; 
+char nbuffer[12]; 
+fd = open ("/tmp/myfifo",O_RDONLY);
+retval = read (fd, nbuffer, sizeof (nbuffer)); 
+fflush(stdin);  
+write(1, nbuffer, sizeof (nbuffer)); 
+
+close (fd); 
+return 0; 
+}
+
+
+/////////////////////////////////////////////////////
+
+Q3
+
